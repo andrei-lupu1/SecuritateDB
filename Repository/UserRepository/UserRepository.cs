@@ -27,7 +27,7 @@ namespace Repository.UserRepository
             OracleParameter param3 = new OracleParameter("RESULT", OracleDbType.Int32, System.Data.ParameterDirection.Output);
             OracleParameter[] parameters = new OracleParameter[] { param1, param2, param3 };
             _context.Database.ExecuteSqlRaw("BEGIN REGISTER(:USERNAME, :PASS, :RESULT); END;", parameters);
-            return result;
+            return param3;
         }
     }
 }
