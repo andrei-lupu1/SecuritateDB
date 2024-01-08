@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using ApplicationBusiness.Interfaces;
+using ApplicationBusiness.UserManager;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Models.Users;
 using Repository;
@@ -12,12 +15,15 @@ namespace SecuritateDBAPI.Controllers
     public class UsersController : ControllerBase
     {
         private readonly Context _context;
+        private readonly IUserManager _userManager;
 
-        public UsersController(Context context)
+        public UsersController(Context context, IUserManager userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
+        [Authorize]
         [HttpGet("GetUsers")]
         public IActionResult GetUsers()
         {
@@ -28,8 +34,13 @@ namespace SecuritateDBAPI.Controllers
         [HttpGet("Register")]
         public IActionResult Register(string username, string pass)
         {
-            var repository = new UserRepository(_context);
-            return Ok(repository.Register(username, pass));
+            return Ok(_userManager.Register(username, pass));
+        }
+
+        [HttpPost("Login")]
+        public IActionResult Login(string username, string pass)
+        {
+            return Ok(_userManager.Login(username, pass));
         }
 
     }
