@@ -1,6 +1,0 @@
-@SecuritateDB_HostAddress = http://localhost:5201
-
-GET {{SecuritateDB_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

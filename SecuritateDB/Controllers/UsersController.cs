@@ -22,8 +22,7 @@ namespace SecuritateDBAPI.Controllers
         public IActionResult GetUsers()
         {
             var repository = new GenericRepository<Users>(_context);
-            var result = repository.GetAll();
-            return Ok(result);
+            return this.Ok(repository.GetAll());
         }
 
         [HttpGet("Register")]

@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Repository;
+using Repository.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +16,8 @@ builder.Services.AddDbContext<Context>(options =>
     options.UseOracle(builder.Configuration.
         GetConnectionString("OraDBConnection"));
 });
+
+builder.Services.AddScoped<IUnitOfWork, Context>();
 
 
 var app = builder.Build();
