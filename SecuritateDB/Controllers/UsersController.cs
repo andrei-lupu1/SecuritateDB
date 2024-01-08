@@ -7,6 +7,7 @@ using Models.Users;
 using Repository;
 using Repository.GenericRepository;
 using Repository.UserRepository;
+using SecuritateDBAPI.Models;
 
 namespace SecuritateDBAPI.Controllers
 {
@@ -28,19 +29,22 @@ namespace SecuritateDBAPI.Controllers
         public IActionResult GetUsers()
         {
             var repository = new GenericRepository<Users>(_context);
-            return this.Ok(repository.GetAll());
+            return Ok(new ApiResponse(true, "Lista utilizatori.", repository.GetAll()));
         }
 
+        [AllowAnonymous]
         [HttpGet("Register")]
         public IActionResult Register(string username, string pass)
         {
-            return Ok(_userManager.Register(username, pass));
+            var result = _userManager.Register(username, pass);
+            return Ok(new ApiResponse(result, "Utilizator inregistrat."));
         }
 
+        [AllowAnonymous]
         [HttpPost("Login")]
         public IActionResult Login(string username, string pass)
         {
-            return Ok(_userManager.Login(username, pass));
+            return Ok(new ApiResponse(true, "Utilizator logat.", _userManager.Login(username, pass)));
         }
 
     }
