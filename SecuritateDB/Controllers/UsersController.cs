@@ -3,6 +3,7 @@ using ApplicationBusiness.UserManager;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Models.Person;
 using Models.Users;
 using Repository;
 using Repository.GenericRepository;
@@ -30,6 +31,14 @@ namespace SecuritateDBAPI.Controllers
         {
             var repository = new GenericRepository<Users>(_context);
             return Ok(new ApiResponse(true, "Lista utilizatori.", repository.GetAll()));
+        }
+
+        [Authorize]
+        [HttpGet("GetAllPersons")]
+        public IActionResult GetAllPersons()
+        {
+            var repository = new GenericRepository<Person>(_context);
+            return Ok(new ApiResponse(true, "Lista persoane.", repository.GetIncluding(x => x.Role)));
         }
 
         [AllowAnonymous]
