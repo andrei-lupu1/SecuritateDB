@@ -1,19 +1,14 @@
-﻿using Models.Users;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using Models.Common;
+using Models.Users;
+using Models.Vehicles;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text.Json.Serialization;
 
 namespace Models.Person
 {
     [Table("PERSONS")]
-    public class Person
+    public class Person: DomainModelBase, IDomainModel
     {
-        [Key]
-        public int ID { get; set; }
 
         public string NUME { get; set; }
 
@@ -24,5 +19,9 @@ namespace Models.Person
         public int ROLE_ID { get; set; }
 
         public Roles Role { get; set; }
+
+        public int USER_ID { get; set; }
+
+        public Users.Users User { get; set; }
     }
 }

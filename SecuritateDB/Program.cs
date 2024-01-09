@@ -1,4 +1,6 @@
+using ApplicationBusiness.CourierManager;
 using ApplicationBusiness.Interfaces;
+using ApplicationBusiness.TokenManager;
 using ApplicationBusiness.UserManager;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -41,8 +43,9 @@ builder.Services.AddDbContext<Context>(options =>
 });
 
 builder.Services.AddScoped<IUnitOfWork, Context>();
+builder.Services.AddScoped<ITokenManager, TokenManager>();
 builder.Services.AddScoped<IUserManager, UserManager>();
-
+builder.Services.AddScoped<ICourierManager, CourierManager>();
 
 var app = builder.Build();
 
