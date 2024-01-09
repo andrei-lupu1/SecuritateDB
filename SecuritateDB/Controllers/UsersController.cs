@@ -21,13 +21,11 @@ namespace SecuritateDBAPI.Controllers
     {
         private readonly Context _context;
         private readonly IUserManager _userManager;
-        private readonly ICourierManager _courierManager;
 
-        public UsersController(Context context, IUserManager userManager, ICourierManager courierManager)
+        public UsersController(Context context, IUserManager userManager)
         {
             _context = context;
             _userManager = userManager;
-            _courierManager = courierManager;
         }
 
         [Authorize]
@@ -36,28 +34,6 @@ namespace SecuritateDBAPI.Controllers
         {
             var repository = new GenericRepository<Users>(_context);
             return Ok(new ApiResponse(true, "Lista utilizatori.", repository.GetAll()));
-        }
-
-
-        [Authorize]
-        [HttpGet("GetAvailableVehicles")]
-        public IActionResult GetAvailableVehicles()
-        {
-            var token = Request.Headers[HeaderNames.Authorization].ToString().Split("Bearer ")[1];
-            if (token != null)
-            {
-                try
-                {
-                    var availableVehicles = _courierManager.GetAvailableVehicles(token);
-                    return Ok(new ApiResponse(true, "Lista masini disponibile.", availableVehicles));
-                }
-                catch (Exception e)
-                {
-                    return Ok(new ApiResponse(false, e.Message));
-                }
-            }
-            else return Ok(new ApiResponse(false, "Nu aveti acces la aceasta informatie."));
-
         }
 
         [Authorize]
