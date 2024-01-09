@@ -48,7 +48,8 @@ namespace SecuritateDBAPI.Controllers
         {
             try
             {
-                return Ok(new ApiResponse(true, "Utilizator logat.", _userManager.Login(username, pass)));
+                var result = _userManager.Login(username, pass);
+                return Ok(new ApiResponse(true, "Utilizator logat.", result));
             }
             catch(Exception e)
             {
