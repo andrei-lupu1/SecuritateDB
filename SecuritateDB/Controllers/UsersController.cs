@@ -19,37 +19,12 @@ namespace SecuritateDBAPI.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly Context _context;
+
         private readonly IUserManager _userManager;
 
-        public UsersController(Context context, IUserManager userManager)
+        public UsersController(IUserManager userManager)
         {
-            _context = context;
             _userManager = userManager;
-        }
-
-        [Authorize]
-        [HttpGet("GetUsers")]
-        public IActionResult GetUsers()
-        {
-            var repository = new GenericRepository<Users>(_context);
-            return Ok(new ApiResponse(true, "Lista utilizatori.", repository.GetAll()));
-        }
-
-        [Authorize]
-        [HttpGet("GetAllPersons")]
-        public IActionResult GetAllPersons()
-        {
-            var repository = new GenericRepository<Person>(_context);
-            return Ok(new ApiResponse(true, "Lista persoane.", repository.GetIncluding(x => x.Role)));
-        }
-
-        [Authorize]
-        [HttpGet("GetPerson")]
-        public IActionResult GetPerson(int id)
-        {
-            var repository = new GenericRepository<Person>(_context);
-            return Ok(new ApiResponse(true, "Lista persoane.", repository.GetByIdIncluding(id,x => x.Role)));
         }
 
         [AllowAnonymous]
