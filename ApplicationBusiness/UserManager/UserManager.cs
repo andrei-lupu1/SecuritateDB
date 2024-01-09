@@ -1,6 +1,7 @@
 ﻿using ApplicationBusiness.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Models.Users;
 using Repository;
 using Repository.UserRepository;
 using System.IdentityModel.Tokens.Jwt;
@@ -32,20 +33,20 @@ namespace ApplicationBusiness.UserManager
             var userID = repository.Login(username, pass);
             if(userID != 0)
             {
-                return GenerateJSONWebToken(userID, repository.GetById(userID).USERNAME);
+                return GenerateJSONWebToken(repository.GetById(userID));
             }
             else return null;
 
         }
-        private string GenerateJSONWebToken(int userID, string Username)
+        private string GenerateJSONWebToken(Users user)
         {
 
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
             var claims = new[] {
-            new Claim("ID", userID.ToString()),
-            new Claim("Username", Username)
+            new Claim("ID", user.ID.ToString()),
+            new Claim("Username", user.USERNAME)
         };
 
             var token = new JwtSecurityToken(_config["Jwt:Issuer"],

@@ -45,15 +45,29 @@ namespace SecuritateDBAPI.Controllers
         [HttpGet("Register")]
         public IActionResult Register(string username, string pass)
         {
-            var result = _userManager.Register(username, pass);
-            return Ok(new ApiResponse(result, "Utilizator inregistrat."));
+            try
+            {
+                var result = _userManager.Register(username, pass);
+                return Ok(new ApiResponse(result, "Utilizator inregistrat."));
+            }
+            catch(Exception e)
+            {
+                return Ok(new ApiResponse(false, e.Message));
+            }
         }
 
         [AllowAnonymous]
         [HttpPost("Login")]
         public IActionResult Login(string username, string pass)
         {
-            return Ok(new ApiResponse(true, "Utilizator logat.", _userManager.Login(username, pass)));
+            try
+            {
+                return Ok(new ApiResponse(true, "Utilizator logat.", _userManager.Login(username, pass)));
+            }
+            catch(Exception e)
+            {
+                return Ok(new ApiResponse(false, e.Message));
+            }
         }
 
     }

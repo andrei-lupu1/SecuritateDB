@@ -15,9 +15,6 @@ namespace Repository
         public Context(DbContextOptions<Context> options) : base(options)
         {
         }
-        public Context()
-        {
-        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
