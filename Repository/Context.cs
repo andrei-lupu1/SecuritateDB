@@ -36,11 +36,6 @@ namespace Repository
                 .WithMany(r => r.People)
                 .HasForeignKey(p => p.ROLE_ID);
 
-            modelBuilder.Entity<Users>()
-                .HasOne(u => u.Person)
-                .WithOne(p => p.User)
-                .HasForeignKey<Person>(p => p.USER_ID);
-
             base.OnModelCreating(modelBuilder);
         }
 

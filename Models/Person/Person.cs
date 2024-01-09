@@ -21,7 +21,5 @@ namespace Models.Person
         public Roles Role { get; set; }
 
         public int USER_ID { get; set; }
-
-        public Users.Users User { get; set; }
     }
 }

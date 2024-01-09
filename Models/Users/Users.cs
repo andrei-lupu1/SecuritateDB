@@ -17,7 +17,6 @@ namespace Models.Users
         public string USERNAME { get; set; } 
 
         public byte[] PASS { get; set; }
-        [JsonIgnore]
-        public Person.Person Person { get; set; }
+
     }
 }
