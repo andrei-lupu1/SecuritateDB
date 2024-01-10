@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ApplicationBusiness\ApplicationBusiness.csproj" />
+    <ProjectReference Include="..\DataTransformationObjects\DataTransformationObjects.csproj" />
     <ProjectReference Include="..\Repository\Repository.csproj" />
   </ItemGroup>
 

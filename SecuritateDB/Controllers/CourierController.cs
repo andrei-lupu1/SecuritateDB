@@ -39,10 +39,64 @@ namespace SecuritateDBAPI.Controllers
             else return Ok(new ApiResponse(false, "Nu aveti acces la aceasta informatie."));
         }
 
-        [HttpGet("GetOrder")]
-        public IActionResult GetOrder(int orderID)
+        [Authorize]
+        [HttpGet("GetOrdersForCourier")]
+        public IActionResult GetOrdersForCourier()
         {
-            return this.Ok(_courierManager.GetOrder(orderID));
+            var token = Request.Headers[HeaderNames.Authorization].ToString().Split("Bearer ")[1];
+            if (token is not null)
+            {
+                try
+                {
+                    var orders = _courierManager.GetOrdersForCourier(token);
+                    return Ok(new ApiResponse(true, "Lista comenzilor pentru curier.", orders));
+                }
+                catch (Exception e)
+                {
+                    return Ok(new ApiResponse(false, e.Message));
+                }
+            }
+            else return Ok(new ApiResponse(false, "Nu aveti acces la aceasta informatie."));
+        }
+
+        [Authorize]
+        [HttpGet("CourierStartWorking")]
+        public IActionResult CourierStartWorking(int vehicleID)
+        {
+            var token = Request.Headers[HeaderNames.Authorization].ToString().Split("Bearer ")[1];
+            if(token is not null)
+            {
+                try
+                {
+                    _courierManager.CourierStartWorking(token, vehicleID);
+                    return Ok(new ApiResponse(true, "Pontajul de inceput al zilei a fost realizat cu succes."));
+                }
+                catch (Exception e)
+                {
+                    return Ok(new ApiResponse(false, e.Message));
+                }
+            }
+            else return Ok(new ApiResponse(false, "Nu aveti acces la aceasta informatie."));
+        }
+
+        [Authorize]
+        [HttpGet("MarkOrderAsDone")]
+        public IActionResult MarkOrderAsDone(int orderID)
+        {
+            var token = Request.Headers[HeaderNames.Authorization].ToString().Split("Bearer ")[1];
+            if (token is not null)
+            {
+                try
+                {
+                    _courierManager.MarkOrderAsDone(token, orderID);
+                    return Ok(new ApiResponse(true, "Comanda a fost finalizata cu succes."));
+                }
+                catch (Exception e)
+                {
+                    return Ok(new ApiResponse(false, e.Message));
+                }
+            }
+            else return Ok(new ApiResponse(false, "Nu aveti acces la aceasta informatie."));
         }
     }
 }

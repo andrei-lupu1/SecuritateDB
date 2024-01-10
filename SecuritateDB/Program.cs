@@ -1,4 +1,6 @@
+using ApplicationBusiness.CatalogsManager;
 using ApplicationBusiness.CourierManager;
+using ApplicationBusiness.CustomerManager;
 using ApplicationBusiness.Interfaces;
 using ApplicationBusiness.TokenManager;
 using ApplicationBusiness.UserManager;
@@ -46,6 +48,8 @@ builder.Services.AddScoped<IUnitOfWork, Context>();
 builder.Services.AddScoped<ITokenManager, TokenManager>();
 builder.Services.AddScoped<IUserManager, UserManager>();
 builder.Services.AddScoped<ICourierManager, CourierManager>();
+builder.Services.AddScoped<ICatalogsManager, CatalogsManager>();
+builder.Services.AddScoped<ICustomerManager, CustomerManager>();
 
 var app = builder.Build();
 

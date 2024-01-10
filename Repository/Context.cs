@@ -41,7 +41,9 @@ namespace Repository
                 .HasOne(c => c.City);
 
             modelBuilder.Entity<Person>()
-                .HasOne(p => p.Address);
+                .HasOne(p => p.Address)
+                .WithOne(a => a.Person)
+                .HasForeignKey<Address>(a => a.PERSON_ID);
 
             modelBuilder.Entity<Order>()
                 .HasOne(x => x.Customer);

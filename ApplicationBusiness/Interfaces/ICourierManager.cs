@@ -8,8 +8,11 @@ namespace ApplicationBusiness.Interfaces
     {
         List<Vehicle> GetAvailableVehicles(string token);
 
-        List<City> GetCities();
+        public List<Order> GetOrdersForCourier(string token);
 
-        public Order GetOrder(int id);
+        public void CourierStartWorking(string token, int vehicleID);
+
+        public void MarkOrderAsDone(string token, int orderID);
+
     }
 }
