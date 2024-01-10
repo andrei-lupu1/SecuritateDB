@@ -17,7 +17,7 @@ namespace ApplicationBusiness.TokenManager
             _config = config;
         }
 
-        public string GenerateJSONWebToken(Users user)
+        public string GenerateJSONWebToken(User user)
         {
 
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));

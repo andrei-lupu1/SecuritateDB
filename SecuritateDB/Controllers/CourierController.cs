@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
+using Models.Catalogs;
+using Repository.GenericRepository;
 using SecuritateDBAPI.Models;
 
 namespace SecuritateDBAPI.Controllers
@@ -35,7 +37,6 @@ namespace SecuritateDBAPI.Controllers
                 }
             }
             else return Ok(new ApiResponse(false, "Nu aveti acces la aceasta informatie."));
-
         }
     }
 }

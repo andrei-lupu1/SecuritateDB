@@ -65,7 +65,7 @@ namespace Repository.GenericRepository
                 .ToList();
         }
 
-        public IEnumerable<T> GetIncluding(params Expression<Func<T, object>>[] includeProperties)
+        public IEnumerable<T> GetAllIncluding(params Expression<Func<T, object>>[] includeProperties)
         {
             IQueryable<T> query = _context.Set<T>();
             foreach (var includeProperty in includeProperties)

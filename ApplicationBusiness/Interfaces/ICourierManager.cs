@@ -1,9 +1,12 @@
-﻿using Models.Vehicles;
+﻿using Models.Catalogs;
+using Models.Vehicles;
 
 namespace ApplicationBusiness.Interfaces
 {
     public interface ICourierManager
     {
-        List<Vehicles> GetAvailableVehicles(string token);
+        List<Vehicle> GetAvailableVehicles(string token);
+
+        List<City> GetCities();
     }
 }

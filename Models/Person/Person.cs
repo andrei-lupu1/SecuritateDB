@@ -16,10 +16,10 @@ namespace Models.Person
 
         public string EMAIL { get; set; }
 
+        public int USER_ID { get; set; }
+
         public int ROLE_ID { get; set; }
 
-        public Roles Role { get; set; }
-
-        public int USER_ID { get; set; }
+        public Address Address { get; set; }
     }
 }

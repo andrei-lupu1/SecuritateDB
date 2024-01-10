@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
+using Models.Catalogs;
+using Models.Orders;
 using Models.Person;
 using Models.Users;
 using Models.Vehicles;
@@ -9,14 +11,15 @@ namespace Repository
 {
     public class Context : DbContext, IUnitOfWork
     {
-        public DbSet<Users> Users { get; set; }
-        public DbSet<Person> Person { get; set; }
-
-        public DbSet<Roles> Role { get; set; }
-
-        public DbSet<Vehicles> Vehicles { get; set; }
-
-        public DbSet<PersonVehicle> PersonVehicle { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Person> Persons { get; set; }
+        public DbSet<Vehicle> Vehicles { get; set; }
+        public DbSet<PersonVehicle> PersonsVehicles { get; set; }
+        public DbSet<County> Counties { get; set; }
+        public DbSet<City> Cities { get; set; }
+        public DbSet<Address> Addresses { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<HistoryOrder> HistoryOrders { get; set; }
 
         private IDbContextTransaction _transaction;
 
@@ -31,10 +34,27 @@ namespace Repository
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Person>()
-                .HasOne(p => p.Role)
-                .WithMany(r => r.People)
-                .HasForeignKey(p => p.ROLE_ID);
+            modelBuilder.Entity<City>()
+                .HasOne(c => c.Courier);
+
+            modelBuilder.Entity<Address>()
+                .HasOne(c => c.City);
+
+            modelBuilder.Entity<Address>()
+                .HasOne(c => c.Person)
+                .WithOne(p => p.Address)
+                .HasForeignKey<Address>(a => a.PERSON_ID);
+
+            modelBuilder.Entity<Order>()
+                .HasOne(x => x.Customer);
+
+            modelBuilder.Entity<Order>()
+                .HasOne(x => x.Courier);
+
+            modelBuilder.Entity<HistoryOrder>()
+                .HasOne(x => x.Order)
+                .WithMany(x => x.HistoryOrders)
+                .HasForeignKey(x => x.ORDER_ID);
 
             base.OnModelCreating(modelBuilder);
         }

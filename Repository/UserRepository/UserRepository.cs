@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Repository.UserRepository
 {
-    public class UserRepository : GenericRepository<Users>, IUserRepository
+    public class UserRepository : GenericRepository<User>, IUserRepository
     {
         private readonly Context _context;
         public UserRepository(Context context) : base(context)

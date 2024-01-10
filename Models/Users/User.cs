@@ -11,7 +11,7 @@ using Models.Common;
 namespace Models.Users
 {
     [Table("USERS")]
-    public class Users: DomainModelBase, IDomainModel
+    public class User: DomainModelBase, IDomainModel
     {
 
         public string USERNAME { get; set; } 

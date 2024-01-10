@@ -6,6 +6,6 @@ namespace ApplicationBusiness.Interfaces
     public interface ITokenManager
     {
         IEnumerable<Claim> ExtractClaims(string jwtToken);
-        string GenerateJSONWebToken(Users user);
+        string GenerateJSONWebToken(User user);
     }
 }

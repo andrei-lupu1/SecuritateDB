@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace Models.Vehicles
 {
     [Table("VEHICLES")]
-    public class Vehicles: DomainModelBase, IDomainModel
+    public class Vehicle: DomainModelBase, IDomainModel
     {
 
         public string NUMBER_PLATE { get; set; }

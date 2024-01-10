@@ -1,4 +1,5 @@
 ﻿using ApplicationBusiness.Interfaces;
+using Models.Catalogs;
 using Models.Enums;
 using Models.Person;
 using Models.Vehicles;
@@ -18,7 +19,7 @@ namespace ApplicationBusiness.CourierManager
             _tokenManager = tokenManager;
         }
 
-        public List<Vehicles> GetAvailableVehicles(string token)
+        public List<Vehicle> GetAvailableVehicles(string token)
         {
             var claims = _tokenManager.ExtractClaims(token);
             var idClaim = claims.FirstOrDefault(x => x.Type == "ID");
@@ -26,7 +27,7 @@ namespace ApplicationBusiness.CourierManager
             {
                 var userID = Convert.ToInt32(idClaim.Value);
                 var personRepository = new GenericRepository<Person>(_context);
-                var person = personRepository.GetIncluding(x => x.Role).FirstOrDefault(x => x.USER_ID == userID);
+                var person = personRepository.GetAll(x => x.USER_ID == userID).FirstOrDefault();
                 if (person == null || person.ROLE_ID != (int)RoleEnum.COURIER)
                 {
                     throw new Exception("Nu aveti acces la aceasta informatie");
@@ -38,9 +39,15 @@ namespace ApplicationBusiness.CourierManager
             }
             var vehiclePersonRepository = new GenericRepository<PersonVehicle>(_context);
             var notAvailableVehiclesIDs = vehiclePersonRepository.GetAll(v => v.USE_DATE.Date == DateTime.Today).Select(v => v.VEHICLE_ID).ToList();
-            var vehicleRepository = new GenericRepository<Vehicles>(_context);
+            var vehicleRepository = new GenericRepository<Vehicle>(_context);
             var availableVehicles = vehicleRepository.GetAll(v => !notAvailableVehiclesIDs.Contains(v.ID));
             return availableVehicles.ToList();
+        }
+
+        public List<City> GetCities()
+        {
+            var repository = new GenericRepository<City>(_context);
+            return repository.GetAllIncluding(x => x.Courier).ToList();
         }
     }
 }
