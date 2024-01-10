@@ -1,4 +1,5 @@
 ﻿using Models.Catalogs;
+using Models.Orders;
 using Models.Vehicles;
 
 namespace ApplicationBusiness.Interfaces
@@ -8,5 +9,7 @@ namespace ApplicationBusiness.Interfaces
         List<Vehicle> GetAvailableVehicles(string token);
 
         List<City> GetCities();
+
+        public Order GetOrder(int id);
     }
 }

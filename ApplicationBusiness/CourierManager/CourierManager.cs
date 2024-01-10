@@ -1,6 +1,7 @@
 ﻿using ApplicationBusiness.Interfaces;
 using Models.Catalogs;
 using Models.Enums;
+using Models.Orders;
 using Models.Person;
 using Models.Vehicles;
 using Repository;
@@ -48,6 +49,12 @@ namespace ApplicationBusiness.CourierManager
         {
             var repository = new GenericRepository<City>(_context);
             return repository.GetAllIncluding(x => x.Courier).ToList();
+        }
+
+        public Order GetOrder(int id)
+        {
+            var repository = new GenericRepository<Order>(_context);
+            return repository.GetAllIncluding(x => x.Customer, x => x.Courier, x => x.HistoryOrders).FirstOrDefault(x => x.ID == id);
         }
     }
 }

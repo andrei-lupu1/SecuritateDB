@@ -40,10 +40,8 @@ namespace Repository
             modelBuilder.Entity<Address>()
                 .HasOne(c => c.City);
 
-            modelBuilder.Entity<Address>()
-                .HasOne(c => c.Person)
-                .WithOne(p => p.Address)
-                .HasForeignKey<Address>(a => a.PERSON_ID);
+            modelBuilder.Entity<Person>()
+                .HasOne(p => p.Address);
 
             modelBuilder.Entity<Order>()
                 .HasOne(x => x.Customer);
@@ -51,10 +49,8 @@ namespace Repository
             modelBuilder.Entity<Order>()
                 .HasOne(x => x.Courier);
 
-            modelBuilder.Entity<HistoryOrder>()
-                .HasOne(x => x.Order)
-                .WithMany(x => x.HistoryOrders)
-                .HasForeignKey(x => x.ORDER_ID);
+            modelBuilder.Entity<Order>()
+                .HasMany(x => x.HistoryOrders);
 
             base.OnModelCreating(modelBuilder);
         }

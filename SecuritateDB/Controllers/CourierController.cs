@@ -38,5 +38,11 @@ namespace SecuritateDBAPI.Controllers
             }
             else return Ok(new ApiResponse(false, "Nu aveti acces la aceasta informatie."));
         }
+
+        [HttpGet("GetOrder")]
+        public IActionResult GetOrder(int orderID)
+        {
+            return this.Ok(_courierManager.GetOrder(orderID));
+        }
     }
 }

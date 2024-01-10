@@ -7,10 +7,7 @@ namespace Models.Person
     [Table("ADDRESSES")]
     public class Address: DomainModelBase, IDomainModel
     {
-        [ForeignKey("Person")]
         public int PERSON_ID { get; set; }
-
-        public Person Person { get; set; }
 
         public string ADDRESS { get; set; }
 
