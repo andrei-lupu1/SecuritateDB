@@ -71,6 +71,15 @@ namespace SecuritateDBAPI.Controllers
                     _courierManager.CourierStartWorking(token, vehicleID);
                     return Ok(new ApiResponse(true, "Pontajul de inceput al zilei a fost realizat cu succes."));
                 }
+                catch(Microsoft.EntityFrameworkCore.DbUpdateException e)
+                {
+                    var message = string.Empty;
+                    if(e.InnerException is not null)
+                    {
+                        message = e.InnerException.Message.Split("\n")[0];
+                    }
+                    return Ok(new ApiResponse(false, message));
+                }
                 catch (Exception e)
                 {
                     return Ok(new ApiResponse(false, e.Message));

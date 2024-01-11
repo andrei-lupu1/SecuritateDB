@@ -74,7 +74,7 @@ namespace ApplicationBusiness.CourierManager
 
         public void MarkOrderAsDone(string token, int orderID)
         {
-            var courierID = CheckCourierRights(token);
+            CheckCourierRights(token);
             var orderRepository = new GenericRepository<Order>(_context);
             var order = orderRepository.GetByIdIncluding(orderID, o => o.HistoryOrders);
             var historyOrderRepository = new GenericRepository<HistoryOrder>(_context);
@@ -118,7 +118,7 @@ namespace ApplicationBusiness.CourierManager
                 {
                     throw new Exception("Nu aveti acces la aceasta informatie");
                 }
-                return userID;
+                return person.ID;
             }
             else
             {
