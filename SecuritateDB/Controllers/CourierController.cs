@@ -107,5 +107,25 @@ namespace SecuritateDBAPI.Controllers
             }
             else return Ok(new ApiResponse(false, "Nu aveti acces la aceasta informatie."));
         }
+
+        [Authorize]
+        [HttpGet("CourierFinishWorking")]
+        public IActionResult CourierFinishWorking()
+        {
+            var token = Request.Headers[HeaderNames.Authorization].ToString().Split("Bearer ")[1];
+            if (token is not null)
+            {
+                try
+                {
+                    _courierManager.CourierFinishWorking(token);
+                    return Ok(new ApiResponse(true, "Pontajul de sfarsit al zilei a fost realizat cu succes."));
+                }
+                catch (Exception e)
+                {
+                    return Ok(new ApiResponse(false, e.Message));
+                }
+            }
+            else return Ok(new ApiResponse(false, "Nu aveti acces la aceasta informatie."));
+        }
     }
 }

@@ -72,6 +72,29 @@ namespace ApplicationBusiness.CourierManager
             _context.CommitTransaction();
         }
 
+        public void CourierFinishWorking(string token)
+        {
+            var courierID = CheckCourierRights(token);
+            var orderRepository = new GenericRepository<Order>(_context);
+            var courierOrders = orderRepository.GetAllIncluding(o => o.COURIER_ID == courierID, o => o.HistoryOrders);
+            var depositOrders = courierOrders.Where(o => o.HistoryOrders.Any(h => h.STATUS_ID == (int)StatusesEnum.PRELUAT) && o.HistoryOrders.Count() == 2);
+            var historyOrderRepository = new GenericRepository<HistoryOrder>(_context);
+            _context.BeginTransaction();
+            foreach (var order in depositOrders)
+            {
+                var historyOrder = new HistoryOrder()
+                {
+                    ORDER_ID = order.ID,
+                    STATUS_ID = (int)StatusesEnum.INDEPOZIT,
+                    STATUS_DATE = DateTime.Now,
+                    LOCATION = $"Depozit{order.HistoryOrders.Last().LOCATION}"
+                };
+                historyOrderRepository.Add(historyOrder);
+            }
+            _context.Save();
+            _context.CommitTransaction();
+        }
+
         public void MarkOrderAsDone(string token, int orderID)
         {
             CheckCourierRights(token);
