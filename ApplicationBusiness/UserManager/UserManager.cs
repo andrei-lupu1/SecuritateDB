@@ -43,7 +43,8 @@ namespace ApplicationBusiness.UserManager
                 NUME = registerPayload.Name,
                 TELEFON = registerPayload.PhoneNumber,
                 EMAIL = registerPayload.Email,
-                USER_ID = userID
+                USER_ID = userID,
+                ROLE_ID = 3
             };
             _context.BeginTransaction();
             personRepository.Add(person);
