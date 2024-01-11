@@ -30,7 +30,6 @@ namespace ApplicationBusiness.UserManager
                 return _tokenManager.GenerateJSONWebToken(repository.GetById(userID));
             }
             else return null;
-
         }
     }
 }

@@ -8,5 +8,7 @@ namespace ApplicationBusiness.Interfaces
         Order AddOrder(string token, OrderPayload orderPayload);
 
         List<Order> GetOrdersForCustomer(string token);
+
+        void AssignAccount(string token, string phoneNumber);
     }
 }

@@ -99,6 +99,20 @@ namespace ApplicationBusiness.CustomerManager
             return orders;
         }
 
+        public void AssignAccount(string token, string phoneNumber)
+        {
+            var userID = CheckCustomerRights(token);
+            var personRepository = new GenericRepository<Person>(_context);
+            var person = personRepository.GetAll(x => x.TELEFON == phoneNumber).FirstOrDefault();
+            if (person is null)
+                throw new Exception($"Nu a fost gasit niciun utilizator cu numarul de telefon {phoneNumber}");
+            person.USER_ID = userID;
+            _context.BeginTransaction();
+            personRepository.Update(person);
+            _context.SaveChanges();
+            _context.CommitTransaction();
+        }
+
         private int CheckCustomerRights(string token)
         {
             var claims = _tokenManager.ExtractClaims(token);
@@ -112,7 +126,7 @@ namespace ApplicationBusiness.CustomerManager
                 {
                     throw new Exception("Nu aveti acces la aceasta informatie");
                 }
-                return person.ID;
+                return userID;
             }
             else
             {
