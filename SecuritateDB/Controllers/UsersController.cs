@@ -1,4 +1,5 @@
 ﻿using ApplicationBusiness.Interfaces;
+using DataTransformationObjects.Payloads;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SecuritateDBAPI.Models;
@@ -18,14 +19,15 @@ namespace SecuritateDBAPI.Controllers
         }
 
         [AllowAnonymous]
-        [HttpGet("Register")]
-        public IActionResult Register(string username, string pass)
+        [HttpPost("Register")]
+        public IActionResult Register([FromBody] RegisterPayload registerPayload)
         {
             try
             {
-                var result = _userManager.Register(username, pass);
-                return Ok(new ApiResponse(result, "Utilizator inregistrat."));
-            }
+                var userID = _userManager.Register(registerPayload.Username, registerPayload.Password);
+                _userManager.CreatePerson(registerPayload, userID);
+                return Ok(new ApiResponse(userID != 0, "Utilizator inregistrat."));
+            }   
             catch(Exception e)
             {
                 return Ok(new ApiResponse(false, e.Message));
@@ -33,7 +35,7 @@ namespace SecuritateDBAPI.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost("Login")]
+        [HttpGet("Login")]
         public IActionResult Login(string username, string pass)
         {
             try

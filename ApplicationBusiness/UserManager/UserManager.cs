@@ -1,5 +1,8 @@
 ﻿using ApplicationBusiness.Interfaces;
+using DataTransformationObjects.Payloads;
+using Models.Person;
 using Repository;
+using Repository.GenericRepository;
 using Repository.UserRepository;
 
 namespace ApplicationBusiness.UserManager
@@ -15,10 +18,10 @@ namespace ApplicationBusiness.UserManager
             _tokenManager = tokenManager;
         }
 
-        public bool Register(string username, string pass)
+        public int Register(string username, string pass)
         {
             var repository = new UserRepository(_context);
-            return repository.Register(username, pass) != 0;
+            return repository.Register(username, pass);
         }
 
         public string Login(string username, string pass)
@@ -30,6 +33,22 @@ namespace ApplicationBusiness.UserManager
                 return _tokenManager.GenerateJSONWebToken(repository.GetById(userID));
             }
             else return null;
+        }
+
+        public void CreatePerson(RegisterPayload registerPayload, int userID)
+        {
+            var personRepository = new GenericRepository<Person>(_context);
+            var person = new Person
+            {
+                NUME = registerPayload.Name,
+                TELEFON = registerPayload.PhoneNumber,
+                EMAIL = registerPayload.Email,
+                USER_ID = userID
+            };
+            _context.BeginTransaction();
+            personRepository.Add(person);
+            _context.SaveChanges();
+            _context.CommitTransaction();
         }
     }
 }
