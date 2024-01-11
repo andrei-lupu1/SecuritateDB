@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
-namespace SecuritateDBAPI.Models
+﻿namespace SecuritateDBAPI.Models
 {
     public class ApiResponse
     {
