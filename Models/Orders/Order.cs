@@ -31,7 +31,7 @@ namespace Models.Orders
 
         public string AWB { get; set; }
 
-        public int DELIVERY_ADDRESS_ID { get; set; }
+        public int? SENDER_ID { get; set; }
 
         public IEnumerable<HistoryOrder> HistoryOrders { get; set; }
     }

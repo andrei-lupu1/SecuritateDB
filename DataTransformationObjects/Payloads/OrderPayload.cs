@@ -10,6 +10,16 @@ namespace DataTransformationObjects.Payloads
 
         public int PaymentMethodId { get; set; }
 
-        public Address Address { get; set; }
+        public string RecipientName { get; set; }
+
+        public string RecipientPhone { get; set; }
+
+        public string RecipientEmail { get; set; }
+
+        public string Address { get; set; }
+
+        public int ZipCode { get; set; }
+
+        public int CityId { get; set; }
     }
 }

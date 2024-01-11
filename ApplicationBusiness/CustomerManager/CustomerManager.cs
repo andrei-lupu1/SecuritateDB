@@ -1,5 +1,6 @@
 ﻿using ApplicationBusiness.Interfaces;
 using DataTransformationObjects.Payloads;
+using Models.Catalogs;
 using Models.Enums;
 using Models.Orders;
 using Models.Person;
@@ -17,9 +18,9 @@ namespace ApplicationBusiness.CustomerManager
     public class CustomerManager : ICustomerManager
     {
         private readonly Context _context;
-        private readonly TokenManager.TokenManager _tokenManager;
+        private readonly ITokenManager _tokenManager;
 
-        public CustomerManager(Context context, TokenManager.TokenManager tokenManager)
+        public CustomerManager(Context context, ITokenManager tokenManager)
         {
             _context = context;
             _tokenManager = tokenManager;
@@ -29,37 +30,51 @@ namespace ApplicationBusiness.CustomerManager
         {
             var customerID = CheckCustomerRights(token);
 
-            #region Add new Address
+            #region Add new Person
 
-            var address = new Address
+            var person = new Person
             {
-                ADDRESS = orderPayload.Address.ADDRESS,
-                CITY_ID = orderPayload.Address.CITY_ID,
-                ZIP_CODE = orderPayload.Address.ZIP_CODE,
+                NUME = orderPayload.RecipientName,
+                TELEFON = orderPayload.RecipientPhone,
+                EMAIL = orderPayload.RecipientEmail,
+                Address = new Address
+                {
+                    ADDRESS = orderPayload.Address,
+                    ZIP_CODE = orderPayload.ZipCode,
+                    CITY_ID = orderPayload.CityId
+                },
+                USER_ID = null,
+                ROLE_ID = null
             };
-            var addressRepository = new GenericRepository<Address>(_context);
+
+            var personRepository = new GenericRepository<Person>(_context);
             _context.BeginTransaction();
-            addressRepository.Add(address);
+            personRepository.Add(person);
             _context.CommitTransaction();
             _context.SaveChanges();
 
             #endregion
 
             #region Add new Order
+            var cityRepository = new GenericRepository<City>(_context);
+            var city = cityRepository.GetByIdIncluding(orderPayload.CityId, x => x.County);
+
 
             var order = new Order
             {
                 AMMOUNT = orderPayload.Ammount,
                 DESCRIPTION = orderPayload.Description,
                 PAYMENT_METHOD_ID = orderPayload.PaymentMethodId,
-                CUSTOMER_ID = customerID,
                 PIN_CODE = new Random().Next(1000, 9999),
-                DELIVERY_ADDRESS_ID = address.ID,
+                CUSTOMER_ID = person.ID,
+                COURIER_ID = city.COURIER_ID,
+                SENDER_ID = customerID
             };
             var orderRepository = new GenericRepository<Order>(_context);
             _context.BeginTransaction();
             orderRepository.Add(order);
-
+            _context.CommitTransaction();
+            _context.SaveChanges();
             #endregion
 
             #region Add new HistoryOrder
@@ -69,9 +84,10 @@ namespace ApplicationBusiness.CustomerManager
                 ORDER_ID = order.ID,
                 STATUS_ID = (int)StatusesEnum.AWBINITIAT,
                 STATUS_DATE = DateTime.Now,
-                LOCATION = address.City.NUME
+                LOCATION = city.County.NAME
             };
             var historyOrderRepository = new GenericRepository<HistoryOrder>(_context);
+            _context.BeginTransaction();
             historyOrderRepository.Add(historyOrder);
             _context.CommitTransaction();
             _context.SaveChanges();
@@ -85,7 +101,7 @@ namespace ApplicationBusiness.CustomerManager
         {
             var customerID = CheckCustomerRights(token);
             var orderRepository = new GenericRepository<Order>(_context);
-            var orders = orderRepository.GetAllIncluding(x => x.CUSTOMER_ID == customerID, x => x.HistoryOrders, x => x.Courier).ToList();
+            var orders = orderRepository.GetAllIncluding(x => x.SENDER_ID == customerID, x => x.HistoryOrders, x => x.Courier, x => x.Customer).ToList();
             return orders;
         }
 
@@ -102,7 +118,7 @@ namespace ApplicationBusiness.CustomerManager
                 {
                     throw new Exception("Nu aveti acces la aceasta informatie");
                 }
-                return userID;
+                return person.ID;
             }
             else
             {

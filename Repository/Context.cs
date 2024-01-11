@@ -37,6 +37,9 @@ namespace Repository
             modelBuilder.Entity<City>()
                 .HasOne(c => c.Courier);
 
+            modelBuilder.Entity<City>()
+                .HasOne(c => c.County);
+
             modelBuilder.Entity<Address>()
                 .HasOne(c => c.City);
 
@@ -52,7 +55,9 @@ namespace Repository
                 .HasOne(x => x.Courier);
 
             modelBuilder.Entity<Order>()
-                .HasMany(x => x.HistoryOrders);
+                .HasMany(x => x.HistoryOrders)
+                .WithOne(o => o.Order)
+                .HasForeignKey(x => x.ORDER_ID);
 
             base.OnModelCreating(modelBuilder);
         }

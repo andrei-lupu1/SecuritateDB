@@ -34,7 +34,7 @@ namespace ApplicationBusiness.CourierManager
         {
             var courierID = CheckCourierRights(token);
             var orderRepository = new GenericRepository<Order>(_context);
-            var courierOrders = orderRepository.GetAllIncluding(o => o.COURIER_ID == courierID ,o => o.HistoryOrders);
+            var courierOrders = orderRepository.GetAllIncluding(o => o.COURIER_ID == courierID ,o => o.HistoryOrders, o => o.Customer , o => o.Customer.Address);
             var pickOrders = courierOrders.Where(o => o.HistoryOrders.Any(h => h.STATUS_ID == (int)StatusesEnum.AWBINITIAT) && o.HistoryOrders.Count() == 1);
             var deliverOrders = courierOrders.Where(o => o.HistoryOrders.Any(h => h.STATUS_ID == (int)StatusesEnum.INDEPOZIT) && o.HistoryOrders.Count() == 3);
             List<Order> orders = [.. pickOrders, .. deliverOrders];

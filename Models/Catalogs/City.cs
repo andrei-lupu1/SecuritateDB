@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Models.Catalogs
@@ -14,7 +15,7 @@ namespace Models.Catalogs
         public string NUME { get; set; }
         [ForeignKey("County")]
         public int COUNTY_ID { get; set; }
-
+        [JsonIgnore]
         public County County { get; set; }
         [ForeignKey("Courier")]
         public int COURIER_ID { get; set; }
