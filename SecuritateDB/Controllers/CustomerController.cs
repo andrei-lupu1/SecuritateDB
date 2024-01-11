@@ -1,5 +1,4 @@
-﻿using ApplicationBusiness.CourierManager;
-using ApplicationBusiness.Interfaces;
+﻿using ApplicationBusiness.Interfaces;
 using DataTransformationObjects.Payloads;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

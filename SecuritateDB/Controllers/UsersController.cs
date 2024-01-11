@@ -1,17 +1,7 @@
 ﻿using ApplicationBusiness.Interfaces;
-using ApplicationBusiness.UserManager;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Net.Http.Headers;
-using Models.Person;
-using Models.Users;
-using Repository;
-using Repository.GenericRepository;
-using Repository.UserRepository;
 using SecuritateDBAPI.Models;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 
 namespace SecuritateDBAPI.Controllers
 {

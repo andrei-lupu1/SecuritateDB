@@ -1,6 +1,4 @@
-﻿using System.Security.Claims;
-
-namespace ApplicationBusiness.Interfaces
+﻿namespace ApplicationBusiness.Interfaces
 {
     public interface IUserManager
     {

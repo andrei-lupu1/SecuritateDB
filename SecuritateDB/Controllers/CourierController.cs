@@ -2,8 +2,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
-using Models.Catalogs;
-using Repository.GenericRepository;
 using SecuritateDBAPI.Models;
 
 namespace SecuritateDBAPI.Controllers

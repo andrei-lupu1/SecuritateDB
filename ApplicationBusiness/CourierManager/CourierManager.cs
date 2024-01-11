@@ -1,5 +1,4 @@
 ﻿using ApplicationBusiness.Interfaces;
-using Models.Catalogs;
 using Models.Enums;
 using Models.Orders;
 using Models.Person;
@@ -87,7 +86,7 @@ namespace ApplicationBusiness.CourierManager
                     ORDER_ID = order.ID,
                     STATUS_ID = (int)StatusesEnum.INDEPOZIT,
                     STATUS_DATE = DateTime.Now,
-                    LOCATION = $"Depozit{order.HistoryOrders.Last().LOCATION}"
+                    LOCATION = $"Depozit {order.HistoryOrders.Last().LOCATION}"
                 };
                 historyOrderRepository.Add(historyOrder);
             }

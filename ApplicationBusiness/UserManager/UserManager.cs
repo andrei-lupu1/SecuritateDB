@@ -1,12 +1,6 @@
 ﻿using ApplicationBusiness.Interfaces;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
-using Models.Users;
 using Repository;
 using Repository.UserRepository;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 
 namespace ApplicationBusiness.UserManager
 {

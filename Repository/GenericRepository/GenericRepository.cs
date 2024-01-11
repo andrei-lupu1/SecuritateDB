@@ -3,7 +3,6 @@
 using Microsoft.EntityFrameworkCore;
 using Models.Common;
 using Repository.Interfaces;
-using System.Linq;
 using System.Linq.Expressions;
 
 namespace Repository.GenericRepository

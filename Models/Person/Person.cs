@@ -1,8 +1,5 @@
 ﻿using Models.Common;
-using Models.Users;
-using Models.Vehicles;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
 
 namespace Models.Person
 {
