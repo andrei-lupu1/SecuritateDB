@@ -1,4 +1,5 @@
-﻿using Models.Orders;
+﻿using DataTransformationObjects.Payloads;
+using Models.Orders;
 using Models.Vehicles;
 
 namespace ApplicationBusiness.Interfaces
@@ -7,7 +8,7 @@ namespace ApplicationBusiness.Interfaces
     {
         List<Vehicle> GetAvailableVehicles(string token);
 
-        List<Order> GetOrdersForCourier(string token);
+        List<OrderOutput> GetOrdersForCourier(string token);
 
         void CourierStartWorking(string token, int vehicleID);
 

@@ -1,4 +1,6 @@
 ﻿using ApplicationBusiness.Interfaces;
+using AutoMapper;
+using DataTransformationObjects.Payloads;
 using Models.Enums;
 using Models.Orders;
 using Models.Person;
@@ -12,11 +14,13 @@ namespace ApplicationBusiness.CourierManager
     {
         private readonly Context _context;
         private readonly ITokenManager _tokenManager;
+        private readonly IMapper _mapper;
 
-        public CourierManager(Context context, ITokenManager tokenManager)
+        public CourierManager(Context context, ITokenManager tokenManager, IMapper mapper)
         {
             _context = context;
             _tokenManager = tokenManager;
+            _mapper = mapper;
         }
 
         public List<Vehicle> GetAvailableVehicles(string token)
@@ -29,15 +33,16 @@ namespace ApplicationBusiness.CourierManager
             return availableVehicles.ToList();
         }
         
-        public List<Order> GetOrdersForCourier(string token)
+        public List<OrderOutput> GetOrdersForCourier(string token)
         {
             var courierID = CheckCourierRights(token);
             var orderRepository = new GenericRepository<Order>(_context);
-            var courierOrders = orderRepository.GetAllIncluding(o => o.COURIER_ID == courierID ,o => o.HistoryOrders, o => o.Customer , o => o.Customer.Address);
+            var courierOrders = orderRepository.GetAllIncluding(o => o.COURIER_ID == courierID ,o => o.HistoryOrders, o => o.Customer , o => o.Customer.Address, o => o.Customer.Address.City);
             var pickOrders = courierOrders.Where(o => o.HistoryOrders.Any(h => h.STATUS_ID == (int)StatusesEnum.AWBINITIAT) && o.HistoryOrders.Count() == 1);
             var deliverOrders = courierOrders.Where(o => o.HistoryOrders.Any(h => h.STATUS_ID == (int)StatusesEnum.INDEPOZIT) && o.HistoryOrders.Count() == 3);
             List<Order> orders = [.. pickOrders, .. deliverOrders];
-            return orders;
+            var result = _mapper.Map(orders, new List<OrderOutput>());
+            return result;
         }
 
         public void CourierStartWorking(string token, int vehicleID)

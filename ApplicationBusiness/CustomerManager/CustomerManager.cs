@@ -1,4 +1,5 @@
 ﻿using ApplicationBusiness.Interfaces;
+using AutoMapper;
 using DataTransformationObjects.Payloads;
 using Models.Catalogs;
 using Models.Enums;
@@ -13,11 +14,13 @@ namespace ApplicationBusiness.CustomerManager
     {
         private readonly Context _context;
         private readonly ITokenManager _tokenManager;
+        private readonly IMapper _mapper;
 
-        public CustomerManager(Context context, ITokenManager tokenManager)
+        public CustomerManager(Context context, ITokenManager tokenManager, IMapper mapper)
         {
             _context = context;
             _tokenManager = tokenManager;
+            _mapper = mapper;
         }
 
         public Order AddOrder(string token, OrderPayload orderPayload)
@@ -91,12 +94,13 @@ namespace ApplicationBusiness.CustomerManager
             return order;
         }
 
-        public List<Order> GetOrdersForCustomer(string token)
+        public List<OrderOutput> GetOrdersForCustomer(string token)
         {
             var customerID = CheckCustomerRights(token);
             var orderRepository = new GenericRepository<Order>(_context);
             var orders = orderRepository.GetAllIncluding(x => x.SENDER_ID == customerID, x => x.HistoryOrders, x => x.Courier, x => x.Customer).ToList();
-            return orders;
+            var result = _mapper.Map(orders, new List<OrderOutput>());
+            return result;
         }
 
         private int CheckCustomerRights(string token)

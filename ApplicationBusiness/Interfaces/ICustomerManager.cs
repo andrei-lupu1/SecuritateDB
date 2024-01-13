@@ -7,6 +7,6 @@ namespace ApplicationBusiness.Interfaces
     {
         Order AddOrder(string token, OrderPayload orderPayload);
 
-        List<Order> GetOrdersForCustomer(string token);
+        List<OrderOutput> GetOrdersForCustomer(string token);
     }
 }

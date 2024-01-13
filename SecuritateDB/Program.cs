@@ -1,9 +1,11 @@
+using ApplicationBusiness.AutoMapperConfig;
 using ApplicationBusiness.CatalogsManager;
 using ApplicationBusiness.CourierManager;
 using ApplicationBusiness.CustomerManager;
 using ApplicationBusiness.Interfaces;
 using ApplicationBusiness.TokenManager;
 using ApplicationBusiness.UserManager;
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -17,6 +19,18 @@ var builder = WebApplication.CreateBuilder(args);
 
 var jwtIssuer = builder.Configuration.GetSection("Jwt:Issuer").Get<string>();
 var jwtKey = builder.Configuration.GetSection("Jwt:Key").Get<string>();
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+                      policy =>
+                      {
+                          policy.WithOrigins("http://localhost:4200")
+                                                  .AllowAnyHeader()
+                                                  .AllowAnyMethod(); ;
+                      });
+});
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
  .AddJwtBearer(options =>
@@ -51,6 +65,14 @@ builder.Services.AddScoped<ICourierManager, CourierManager>();
 builder.Services.AddScoped<ICatalogsManager, CatalogsManager>();
 builder.Services.AddScoped<ICustomerManager, CustomerManager>();
 
+var mapperConfig = new MapperConfiguration(mc =>
+{
+    mc.AddProfile(new OrderMap());
+});
+
+IMapper mapper = mapperConfig.CreateMapper();
+builder.Services.AddSingleton(mapper);
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -61,6 +83,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors(MyAllowSpecificOrigins);
 
 app.UseAuthorization();
 

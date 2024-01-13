@@ -44,7 +44,11 @@ namespace SecuritateDBAPI.Controllers
                 var result = _userManager.Login(username, pass);
                 return Ok(new ApiResponse(true, "Utilizator logat.", result));
             }
-            catch(Exception e)
+            catch(Oracle.ManagedDataAccess.Client.OracleException e)
+            {
+                return Ok(new ApiResponse(false, "Username sau parola gresita."));
+            }
+            catch (Exception e)
             {
                 return Ok(new ApiResponse(false, e.Message));
             }
@@ -56,8 +60,8 @@ namespace SecuritateDBAPI.Controllers
             var token = Request.Headers[HeaderNames.Authorization].ToString().Split("Bearer ")[1];
             if (token is not null)
             {
-                this._userManager.GetRole(token);
-                return Ok(new ApiResponse(true, "Rolul utilizatorului.", this._userManager.GetRole(token)));
+                var result = this._userManager.GetRole(token);
+                return Ok(new ApiResponse(true, "Rolul utilizatorului.", result));
             }
             else
             {
