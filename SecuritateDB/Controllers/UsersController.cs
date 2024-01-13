@@ -2,6 +2,7 @@
 using DataTransformationObjects.Payloads;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Net.Http.Headers;
 using SecuritateDBAPI.Models;
 
 namespace SecuritateDBAPI.Controllers
@@ -46,6 +47,21 @@ namespace SecuritateDBAPI.Controllers
             catch(Exception e)
             {
                 return Ok(new ApiResponse(false, e.Message));
+            }
+        }
+
+        [HttpGet("GetRole")]
+        public IActionResult GetRole() 
+        {
+            var token = Request.Headers[HeaderNames.Authorization].ToString().Split("Bearer ")[1];
+            if (token is not null)
+            {
+                this._userManager.GetRole(token);
+                return Ok(new ApiResponse(true, "Rolul utilizatorului.", this._userManager.GetRole(token)));
+            }
+            else
+            {
+                return Ok(new ApiResponse(false, "A intervenit o eroare."));
             }
         }
 

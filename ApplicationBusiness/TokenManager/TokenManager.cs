@@ -1,7 +1,9 @@
 ﻿using ApplicationBusiness.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Models.Person;
 using Models.Users;
+using Repository.GenericRepository;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -25,7 +27,7 @@ namespace ApplicationBusiness.TokenManager
 
             var claims = new[] {
             new Claim("ID", user.ID.ToString()),
-            new Claim("Username", user.USERNAME)
+            new Claim("Username", user.USERNAME),
         };
 
             var token = new JwtSecurityToken(_config["Jwt:Issuer"],

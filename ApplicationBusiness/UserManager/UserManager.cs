@@ -51,5 +51,20 @@ namespace ApplicationBusiness.UserManager
             _context.SaveChanges();
             _context.CommitTransaction();
         }
+
+        public int? GetRole(string token)
+        {
+            var claims = _tokenManager.ExtractClaims(token);
+            var idClaim = claims.FirstOrDefault(x => x.Type == "ID");
+            if (idClaim != null)
+            {
+                var userID = Convert.ToInt32(idClaim.Value);
+                var personRepository = new GenericRepository<Person>(_context);
+                var person = personRepository.GetAll(x => x.USER_ID == userID).FirstOrDefault();
+                if (person == null) return 0;
+                else return person.ROLE_ID;
+            }
+            else return null;
+        }
     }
 }

@@ -7,5 +7,6 @@ namespace ApplicationBusiness.Interfaces
         string Login(string username, string pass);
         int Register(string username, string pass);
         void CreatePerson(RegisterPayload registerPayload, int userID);
+        int? GetRole(string token);
     }
 }
