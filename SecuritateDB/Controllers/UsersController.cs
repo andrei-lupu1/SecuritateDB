@@ -46,7 +46,7 @@ namespace SecuritateDBAPI.Controllers
             }
             catch(Oracle.ManagedDataAccess.Client.OracleException e)
             {
-                return Ok(new ApiResponse(false, "Username sau parola gresita."));
+                return Ok(new ApiResponse(false, e.Message.Split('\n')[0]));
             }
             catch (Exception e)
             {
