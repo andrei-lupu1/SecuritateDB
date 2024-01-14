@@ -117,7 +117,7 @@ namespace ApplicationBusiness.CustomerManager
                 {
                     throw new Exception("Nu aveti acces la aceasta informatie");
                 }
-                return userID;
+                return person.ID;
             }
             else
             {
