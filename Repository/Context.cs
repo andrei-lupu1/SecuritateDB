@@ -38,7 +38,9 @@ namespace Repository
                 .HasOne(c => c.Courier);
 
             modelBuilder.Entity<City>()
-                .HasOne(c => c.County);
+                .HasOne(c => c.County)
+                .WithMany(cx => cx.Cities)
+                .HasForeignKey(c => c.COUNTY_ID);
 
             modelBuilder.Entity<Address>()
                 .HasOne(c => c.City);

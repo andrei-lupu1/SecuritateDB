@@ -24,7 +24,7 @@ namespace ApplicationBusiness.CustomerManager
             _mapper = mapper;
         }
 
-        public Order AddOrder(string token, OrderPayload orderPayload)
+        public OrderOutput AddOrder(string token, OrderPayload orderPayload)
         {
             var customerID = CheckCustomerRights(token);
 
@@ -92,14 +92,14 @@ namespace ApplicationBusiness.CustomerManager
 
             #endregion
 
-            return order;
+            return _mapper.Map<Order,OrderOutput>(order);
         }
 
         public List<OrderOutput> GetOrdersForCustomer(string token)
         {
             var customerID = CheckCustomerRights(token);
             var orderRepository = new GenericRepository<Order>(_context);
-            var orders = orderRepository.GetAllIncluding(x => x.SENDER_ID == customerID, x => x.HistoryOrders, x => x.Courier, x => x.Customer).ToList();
+            var orders = orderRepository.GetIncluding(x => x.SENDER_ID == customerID, x => x.HistoryOrders, x => x.Courier, x => x.Customer, x => x.Customer.Address, x => x.Customer.Address.City).ToList().OrderByDescending(x => x.ID);
             var result = _mapper.Map(orders, new List<OrderOutput>());
             return result;
         }

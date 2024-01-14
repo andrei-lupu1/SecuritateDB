@@ -6,7 +6,7 @@ namespace ApplicationBusiness.Interfaces
 {
     public interface ICustomerManager
     {
-        Order AddOrder(string token, OrderPayload orderPayload);
+        OrderOutput AddOrder(string token, OrderPayload orderPayload);
 
         List<OrderOutput> GetOrdersForCustomer(string token);
     }

@@ -21,7 +21,7 @@ namespace ApplicationBusiness.CatalogsManager
         public List<County> GetCounties()
         {
             var countyRepository = new GenericRepository<County>(_context);
-            var counties = countyRepository.GetAll();
+            var counties = countyRepository.GetAllIncluding(x => x.Cities);
             return counties.ToList();
         }
 
