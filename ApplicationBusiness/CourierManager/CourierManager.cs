@@ -132,7 +132,7 @@ namespace ApplicationBusiness.CourierManager
             _context.CommitTransaction();
         }
 
-        public bool isCurierWorking(string token)
+        public bool IsCourierWorking(string token)
         {
             var courierID = CheckCourierRights(token);
             var personVehicleRepository = new GenericRepository<PersonVehicle>(_context);

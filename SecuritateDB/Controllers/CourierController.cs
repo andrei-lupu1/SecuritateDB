@@ -135,7 +135,7 @@ namespace SecuritateDBAPI.Controllers
             {
                 try
                 {
-                    var isWorking = _courierManager.IsCurierWorking(token);
+                    var isWorking = _courierManager.IsCourierWorking(token);
                     return Ok(new ApiResponse(true, "Verificare pontaj.", isWorking));
                 }
                 catch (Exception e)
