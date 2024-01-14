@@ -16,5 +16,7 @@ namespace ApplicationBusiness.Interfaces
 
         void CourierFinishWorking(string token);
 
+        bool IsCourierWorking(string token);
+
     }
 }

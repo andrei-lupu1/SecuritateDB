@@ -125,5 +125,25 @@ namespace SecuritateDBAPI.Controllers
             }
             else return Ok(new ApiResponse(false, "Nu aveti acces la aceasta informatie."));
         }
+
+        [Authorize]
+        [HttpGet("IsCurierWorking")]
+        public IActionResult IsCurierWorking()
+        {
+            var token = Request.Headers[HeaderNames.Authorization].ToString().Split("Bearer ")[1];
+            if (token is not null)
+            {
+                try
+                {
+                    var isWorking = _courierManager.IsCurierWorking(token);
+                    return Ok(new ApiResponse(true, "Verificare pontaj.", isWorking));
+                }
+                catch (Exception e)
+                {
+                    return Ok(new ApiResponse(false, e.Message));
+                }
+            }
+            else return Ok(new ApiResponse(false, "Nu aveti acces la aceasta informatie."));
+        }
     }
 }

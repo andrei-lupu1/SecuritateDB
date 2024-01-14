@@ -132,6 +132,14 @@ namespace ApplicationBusiness.CourierManager
             _context.CommitTransaction();
         }
 
+        public bool isCurierWorking(string token)
+        {
+            var courierID = CheckCourierRights(token);
+            var personVehicleRepository = new GenericRepository<PersonVehicle>(_context);
+            var personVehicle = personVehicleRepository.GetAll(pv => pv.COURIER_ID == courierID && pv.USE_DATE.Date == DateTime.Today);
+            return personVehicle.Any();
+        }
+
         private int CheckCourierRights(string token)
         {
             var claims = _tokenManager.ExtractClaims(token);
