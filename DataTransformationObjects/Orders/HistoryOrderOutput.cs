@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataTransformationObjects.Payloads
+namespace DataTransformationObjects.Orders
 {
     public class HistoryOrderOutput
     {
@@ -14,6 +14,6 @@ namespace DataTransformationObjects.Payloads
 
         public string StatusDate { get; set; }
 
-        public string Status { get; set; }  
+        public string Status { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using DataTransformationObjects.Payloads;
+﻿using DataTransformationObjects.Orders;
+using DataTransformationObjects.Payloads;
 using Models.Orders;
 
 namespace ApplicationBusiness.Interfaces

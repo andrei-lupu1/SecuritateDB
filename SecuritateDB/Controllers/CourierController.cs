@@ -127,8 +127,8 @@ namespace SecuritateDBAPI.Controllers
         }
 
         [Authorize]
-        [HttpGet("IsCurierWorking")]
-        public IActionResult IsCurierWorking()
+        [HttpGet("IsCourierWorking")]
+        public IActionResult IsCourierWorking()
         {
             var token = Request.Headers[HeaderNames.Authorization].ToString().Split("Bearer ")[1];
             if (token is not null)

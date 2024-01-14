@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataTransformationObjects.Payloads
+namespace DataTransformationObjects.Orders
 {
     public class OrderOutput
     {
